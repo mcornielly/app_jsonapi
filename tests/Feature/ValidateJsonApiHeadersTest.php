@@ -70,7 +70,7 @@ class ValidateJsonApiHeadersTest extends TestCase
     /**
     @test
      */
-    public function content_type_header_must_be_present_in_response()
+    public function content_type_header_must_be_present_in_responses()
     {
 
         $this->get('test_route', [
@@ -91,7 +91,7 @@ class ValidateJsonApiHeadersTest extends TestCase
     /**
     @test
      */
-    public function content_type_header_must_not_be_present_in_response()
+    public function content_type_header_must_not_be_present_in_responses()
     {
         Route::any('empty_response', function() {
             return response()->noContent();
@@ -109,6 +109,32 @@ class ValidateJsonApiHeadersTest extends TestCase
         $this->patch('empty_response', [], [
             'accept' => 'application/vnd.api+json',
             'content-type' => 'application/vnd.api+json'
+        ])->assertHeaderMissing('content-type');
+    }
+
+    public function content_type_header_must_not_be_present_in_empty_responses()
+    {
+        Route::any('empty_response', function() {
+            return response()->noContent();
+        })->middleware(ValidateJsonApiHeaders::class);
+
+        $this->get('empty_response', [
+            'accept' => 'application/vnd.api+js'
+        ])->assertHeaderMissing('content-type');
+
+        $this->post('empty_response', [
+            'accept' => 'application/vnd.api+js',
+            'content-type' => 'application/vnd.api+js'
+        ])->assertHeaderMissing('content-type');
+
+        $this->patch('empty_response', [
+            'accept' => 'application/vnd.api+js',
+            'content-type' => 'application/vnd.api+js'
+        ])->assertHeaderMissing('content-type');
+
+        $this->delete('empty_response', [
+            'accept' => 'application/vnd.api+js',
+            'content-type' => 'application/vnd.api+js'
         ])->assertHeaderMissing('content-type');
     }
 
