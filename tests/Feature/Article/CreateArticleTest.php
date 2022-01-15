@@ -5,11 +5,16 @@ namespace Tests\Feature\Article;
 use App\Models\Article;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Testing\TestResponse;
+use Tests\MakesJsonApiRequests;
 use Tests\TestCase;
 
 class CreateArticleTest extends TestCase
 {
     use RefreshDatabase;
+
+
+
 
     /**
     @test
@@ -66,23 +71,15 @@ class CreateArticleTest extends TestCase
             'data' => [
                 'type' => 'articles',
                 'attributes' => [
+                    'title' => 'nuevo-articulo',
                     'slug' => 'nuevo-articulo',
                     'content' => 'Nuevo contenido del articulo',
                 ]
             ]
         ]);
 
-        $response->assertJsonStructure([
-            'errors' => [
-                ['title', 'detail', 'source' => ['pointer']]
-            ]
-        ])->assertJsonFragment([
-            'source' => ['pointer' => '/data/attributes/title']
-        ])->assertHeader(
-            'content-type', 'application/vnd.api+json'
-        )->assertStatus(422);
 
-        // $response->assertJsonValidationErrors('data.attributes.title');
+        $response->assertJsonApiValidationErrors('title');
 
     }
 
@@ -103,7 +100,7 @@ class CreateArticleTest extends TestCase
             ]
         ]);
 
-        $response->assertJsonValidationErrors('data.attributes.content');
+        $response->assertJsonApiValidationErrors('content');
 
     }
 
@@ -123,7 +120,7 @@ class CreateArticleTest extends TestCase
             ]
         ]);
 
-        $response->assertJsonValidationErrors('data.attributes.slug');
+        $response->assertJsonApiValidationErrors('slug');
 
     }
 
@@ -144,7 +141,7 @@ class CreateArticleTest extends TestCase
             ]
         ]);
 
-        $response->assertJsonValidationErrors('data.attributes.content');
+        $response->assertJsonApiValidationErrors('content');
 
     }
 
