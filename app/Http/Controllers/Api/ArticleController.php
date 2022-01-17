@@ -22,7 +22,7 @@ class ArticleController extends Controller
         return ArticleResource::make($article);
     }
 
-    public function create(Request $request)
+    public function store(Request $request)
     {
         // dd($request->input('data.attributes'));
         // dd($request->all());
