@@ -71,7 +71,6 @@ class CreateArticleTest extends TestCase
             'data' => [
                 'type' => 'articles',
                 'attributes' => [
-                    'title' => 'nuevo-articulo',
                     'slug' => 'nuevo-articulo',
                     'content' => 'Nuevo contenido del articulo',
                 ]
