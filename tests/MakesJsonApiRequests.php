@@ -6,6 +6,8 @@ use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Testing\TestResponse;
 use PhpParser\Node\Stmt\TryCatch;
 use PHPUnit\Framework\Assert as PHPUnit;
+use Illuminate\Support\Str;
+
 
 trait MakesJsonApiRequests
 {
@@ -45,10 +47,14 @@ trait MakesJsonApiRequests
         return function($attribute) {
             /** @var TestResponse $this */
 
+            $pointer = Str::of($attribute)->startsWith('data') ? "/" . str_replace('.','/', $attribute)
+
+            :  "/data/attributes/{$attribute}";
+
             try {
 
                 $this->assertJsonFragment([
-                        'source' => ['pointer' => "/data/attributes/{$attribute}"]
+                    'source' => ['pointer' => $pointer]
                 ]);
             } catch (\PHPUnit\Framework\ExpectationFailedException $e) {
                 PHPUnit::fail("Failed to find a JSON:API validation error for key: '{$attribute}' \n"
