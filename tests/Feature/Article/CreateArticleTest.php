@@ -24,15 +24,13 @@ class CreateArticleTest extends TestCase
         $this->withExceptionHandling();
 
         $response = $this->postJson(route('api.v1.articles.store'), [
-            'data' => [
                 'type' => 'articles',
                 'attributes' => [
-                    'title' => 'Nuevo articulo',
-                    'slug' => 'nuevo-articulo',
-                    'content' => 'Nuevo contenido del articulo',
-                    'category_id' => 1,
-                    'user_id' => 1,
-                ]
+                'title' => 'Nuevo articulo',
+                'slug' => 'nuevo-articulo',
+                'content' => 'Nuevo contenido del articulo',
+                'category_id' => 1,
+                'user_id' => 1,
             ]
         ]);
 

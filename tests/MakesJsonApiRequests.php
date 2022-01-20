@@ -25,7 +25,9 @@ trait MakesJsonApiRequests
     {
         $headers['accept'] = 'application/vnd.api+json';
 
-        return parent::json($method, $uri, $data, $headers);
+        $formattedData['data'] = $data;
+
+        return parent::json($method, $uri, $formattedData, $headers);
     }
 
     public function postJson($uri, array $data = [], array $headers = [])
