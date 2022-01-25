@@ -28,14 +28,34 @@ trait MakesJsonApiRequests
         $this->formatJsonApiDocument = false;
     }
 
+    public function getFormattedData($uri, array $data): array
+    {
+        $path = parse_url($uri)['path'];
+        $type = (string) Str::of($path)->after('api/v1/')->before('/');
+        $id = (string) Str::of($path)->after($type)->replace('/', '');
+
+        return [
+            'data' => array_filter([
+                'id' => $id,
+                'type' => $type,
+                'attributes' => $data
+            ])
+        ];
+
+    }
+
     public function json($method, $uri, array $data = [], array $headers = [])
     {
+
+
         $headers['accept'] = 'application/vnd.api+json';
 
         if ($this->formatJsonApiDocument) {
-            $formattedData['data']['attributes'] = $data;
-            $formattedData['data']['type'] = (string) Str::of($uri)->after('api/v1/');
+
+            $formattedData = $this->getFormattedData($uri, $data);
+
         }
+
 
         // dd($formattedData);
 
