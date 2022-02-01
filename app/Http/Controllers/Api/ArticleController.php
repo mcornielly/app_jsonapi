@@ -27,6 +27,12 @@ class ArticleController extends Controller
         // dd($request->all());
         // dd($request->input('data.attributes.title'));
 
+        $request->validate([
+            'data.attributes.title' => ['required', 'min:4'],
+            'data.attributes.slug' => ['required'],
+            'data.attributes.content' => ['required'],
+        ]);
+
         $article = Article::create([
             'title' => $request->input('data.attributes.title'),
             'slug' => $request->input('data.attributes.slug'),

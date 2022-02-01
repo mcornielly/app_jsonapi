@@ -58,4 +58,96 @@ class CreateArticleTest extends TestCase
         ]);
     }
 
+    /**
+    @test
+     */
+    public function title_is_required()
+    {
+
+        $response = $this->postJson(route('api.v1.articles.create'), [
+            'data' => [
+                'type' => 'articles',
+                'attributes' => [
+                    'slug' => 'nuevo-articulo',
+                    'content' => 'Nuevo contenido del articulo',
+                    'category_id' => 1,
+                    'user_id' => 1,
+                ]
+            ]
+        ]);
+
+        $response->assertJsonS
+
+        // $response->assertJsonValidationErrors('data.attributes.title');
+
+    }
+
+    /**
+    @test
+     */
+    public function title_is_at_least_4_characters()
+    {
+
+        $response = $this->postJson(route('api.v1.articles.create'), [
+            'data' => [
+                'type' => 'articles',
+                'attributes' => [
+                    'title' => 'Nue',
+                    'slug' => 'nuevo-articulo',
+                    'content' => 'Nuevo contenido del articulo',
+                    'category_id' => 1,
+                    'user_id' => 1,
+                ]
+            ]
+        ]);
+
+        $response->assertJsonValidationErrors('data.attributes.title');
+
+    }
+
+        /**
+    @test
+     */
+    public function slug_is_required()
+    {
+
+        $response = $this->postJson(route('api.v1.articles.create'), [
+            'data' => [
+                'type' => 'articles',
+                'attributes' => [
+                    'title' => 'Nuevo articulo',
+                    'content' => 'Nuevo contenido del articulo',
+                    'category_id' => 1,
+                    'user_id' => 1,
+                ]
+            ]
+        ]);
+
+        $response->assertJsonValidationErrors('data.attributes.slug');
+
+    }
+
+            /**
+    @test
+     */
+    public function content_is_required()
+    {
+
+        $response = $this->postJson(route('api.v1.articles.create'), [
+            'data' => [
+                'type' => 'articles',
+                'attributes' => [
+                    'title' => 'Nuevo articulo',
+                    'slug' => 'nuevo-articulo',
+                    'category_id' => 1,
+                    'user_id' => 1,
+                ]
+            ]
+        ]);
+
+        $response->assertJsonValidationErrors('data.attributes.content');
+
+    }
+
+
 }
